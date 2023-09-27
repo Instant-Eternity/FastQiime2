@@ -12,7 +12,7 @@ usage() {
     echo ""
     echo "Options:"
     echo "  -h              Display this help message."
-    echo "  -v              Version information"
+    echo "  -v              Version information."
     echo "  -d <directory>  Specify the output directory (default: CleanData)."
     echo ""
     echo "Arguments:"
