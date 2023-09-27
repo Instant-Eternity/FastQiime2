@@ -17,12 +17,15 @@ usage() {
     echo "  -1 <input_R1_file>  Path to the input R1 FASTQ file."
     echo "  -2 <input_R2_file>  Path to the input R2 FASTQ file."
     echo "  -o <output_directory>  Output directory (default: fastq_multx_output/)."
+    echo "  -v                  Version information."
     echo "  -h                  Display this help message."
     exit 1
 }
 
-Version(){ 1.4.3
-
+display_version() {
+    #echo -e "\e[1mSoftware\tVersion\e[0m"
+    echo "$(tput bold)Software\tVersion$(tput sgr0)"
+    echo "fastq-multx\t\t1.4.3"
 }
 
 split_marge(barcode.txt, 1.clean.fq.gz, 2.clean.fq.gz) {
@@ -66,7 +69,7 @@ split_marge(barcode.txt, 1.clean.fq.gz, 2.clean.fq.gz) {
 output_directory="fastq_multx_output"
 
 # Process command line options using getopts
-while getopts ":b:1:2:o:h" opt; do
+while getopts ":b:1:2:o:hv" opt; do
     case $opt in
         b)
             barcode_file="$OPTARG"
@@ -79,6 +82,9 @@ while getopts ":b:1:2:o:h" opt; do
             ;;
         o)
             output_directory="$OPTARG"
+            ;;
+        v)
+            display_version
             ;;
         h)
             usage
