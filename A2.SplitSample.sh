@@ -5,6 +5,25 @@
 # Created Time: Wen  9/27 12:17:42 2023
 #########################################################################
 #!/bin/bash
+# Define a function to display usage information
+usage() {
+    echo "Usage: $0 [-h] [-d <output_directory>] <data_list_file>"
+    echo "Download SRA data from a list of accession numbers."
+    echo ""
+    echo "Options:"
+    echo "  -h              Display this help message."
+	echo "	-v				Version information."
+    echo "  -d <directory>  Specify the output directory (default: CleanData)."
+    echo ""
+    echo "Arguments:"
+    echo "  <data_list_file>  File containing a list of SRA accession numbers."
+    exit 1
+}
+
+
+
+
+
 
 mkdir fastq_multx_output-1/
 mkdir fastq_multx_output-2/
