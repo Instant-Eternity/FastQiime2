@@ -1,10 +1,11 @@
-##########################################################################
-# File Name: A2.SplitSample.sh
-# Author: Instant-Eternity
-# mail: hunterfirstone@i.smu.edu.cn
-# Created Time: Thu 03 Jun 2021 11:34:14 AM CST
 #########################################################################
-#!/usr/bin/bash
+# File Name: A2.SortData.sh
+# Author: yonghengchana
+# mail: hunterfirstone@i.smu.edu.cn
+# Created Time: Wen  9/27 12:17:42 2023
+#########################################################################
+#!/bin/bash
+
 mkdir fastq_multx_output-1/
 mkdir fastq_multx_output-2/
 
