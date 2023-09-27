@@ -5,46 +5,90 @@
 # Created Time: Wen  9/27 12:17:42 2023
 #########################################################################
 #!/bin/bash
-# Define a function to display usage information
+
+# Function to display usage information
 usage() {
-    echo "Usage: $0 [-h] [-d <output_directory>] <data_list_file>"
-    echo "Download SRA data from a list of accession numbers."
+    echo "Usage: $0 -b <barcode_file> -1 <input_R1_file> -2 <input_R2_file>"
+    echo "       [-h] [-o <output_directory>]"
+    echo ""
+    echo "Split and merge FASTQ files using fastq-multx."
     echo ""
     echo "Options:"
-    echo "  -h              Display this help message."
-	echo "	-v				Version information."
-    echo "  -d <directory>  Specify the output directory (default: CleanData)."
-    echo ""
-    echo "Arguments:"
-    echo "  <data_list_file>  File containing a list of SRA accession numbers."
+    echo "  -b <barcode_file>   Path to the barcode file."
+    echo "  -1 <input_R1_file>  Path to the input R1 FASTQ file."
+    echo "  -2 <input_R2_file>  Path to the input R2 FASTQ file."
+    echo "  -o <output_directory>  Output directory (default: fastq_multx_output/)."
+    echo "  -h                  Display this help message."
     exit 1
 }
 
+# Set default values
+output_directory="fastq_multx_output"
+
+# Process command line options using getopts
+while getopts ":b:1:2:o:h" opt; do
+    case $opt in
+        b)
+            barcode_file="$OPTARG"
+            ;;
+        1)
+            input_R1_file="$OPTARG"
+            ;;
+        2)
+            input_R2_file="$OPTARG"
+            ;;
+        o)
+            output_directory="$OPTARG"
+            ;;
+        h)
+            usage
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            usage
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            usage
+            ;;
+    esac
+done
+
+# Check for the presence of required options
+if [ -z "$barcode_file" ] || [ -z "$input_R1_file" ] || [ -z "$input_R2_file" ]; then
+    echo "Error: Missing required options."
+    usage
+fi
+
+# Create output directory if it doesn't exist
+mkdir -p "$output_directory"
+
+# Main
+split_marge(barcode.txt, 1.clean.fq.gz, 2.clean.fq.gz)
+
+# Example usage:
+# ./your_script.sh -b barcode.txt -1 1.clean.fq.gz -2 2.clean.fq.gz -o fastq_multx_output/
 
 
 
+split_marge(barcode.txt, 1.clean.fq.gz, 2.clean.fq.gz) {
+    mkdir fastq_multx_output-1/
+    mkdir fastq_multx_output-2/
 
+    time fastq-multx -B barcode.txt \
+        -m 1 \
+        -b 1.clean.fq.gz 2.clean.fq.gz \
+        -o %.R1.fastq \
+        -o %.R2.fastq
 
-mkdir fastq_multx_output-1/
-mkdir fastq_multx_output-2/
+    mv *.fastq fastq_multx_output-1/
 
-time /bigdata/wangzhang_guest/chenpeng_project/00_software/fastq-multx/fastq-multx \
-				 -B barcode.txt \
-				 -m 1 \
-				 -b 1.clean.fq.gz 2.clean.fq.gz \
-				 -o %.R1.fastq \
-				 -o %.R2.fastq
-
-mv *.fastq fastq_multx_output-1/
-
-time /bigdata/wangzhang_guest/chenpeng_project/00_software/fastq-multx/fastq-multx \
-				 -B barcode.txt \
-				 -m 1 \
-				 -b 2.clean.fq.gz 1.clean.fq.gz \
-				 -o %.R1.fastq \
-				 -o %.R2.fastq
-
-mv *.fastq fastq_multx_output-2/
+    time fastq-multx -B barcode.txt \
+        -m 1 \
+        -b 2.clean.fq.gz 1.clean.fq.gz \
+        -o %.R1.fastq \
+        -o %.R2.fastq
+    mv *.fastq fastq_multx_output-2/
 
 mkdir fastq_multx_output/
 
@@ -64,3 +108,4 @@ ls ./fastq_multx_output/*.fastq.fq |awk -F ".fq" '{print "mv "$0" "$1$2""}'|bash
 
 gzip ./fastq_multx_output/*.fastq.fq
 #sed -i '$d' sample.list
+}
