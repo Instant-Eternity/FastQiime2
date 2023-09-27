@@ -1,5 +1,5 @@
 #########################################################################
-# File Name: A2.SortData.sh
+# File Name: A2.SplitSample.sh
 # Author: yonghengchana
 # mail: hunterfirstone@i.smu.edu.cn
 # Created Time: Wen  9/27 12:17:42 2023
