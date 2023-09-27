@@ -12,6 +12,7 @@ usage() {
     echo ""
     echo "Options:"
     echo "  -h              Display this help message."
+    echo "  -v              Version information"
     echo "  -d <directory>  Specify the output directory (default: CleanData)."
     echo ""
     echo "Arguments:"
@@ -19,14 +20,24 @@ usage() {
     exit 1
 }
 
+display_version() {
+    #echo -e "\e[1mSoftware\tVersion\e[0m"
+    echo "$(tput bold)Software\tVersion$(tput sgr0)"
+    echo "prefetch\t\t3.0.7"
+    echo "fastq-dump\t\t3.0.7"
+}
+
 # Set default values
 output_directory="CleanData"
 
 # Process command line options using getopts
-while getopts ":hd:" opt; do
+while getopts ":hvd:" opt; do
     case $opt in
         h)
             usage
+            ;;
+        v)
+            display_version
             ;;
         d)
             output_directory="$OPTARG"
