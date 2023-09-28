@@ -4,11 +4,11 @@ min=45499
 
 #-----Computing Core Diversity-----
 time qiime diversity core-metrics-phylogenetic \
-        --i-phylogeny $PWD/result_${sample}/R3.${sample}.rooted-tree.qza \
-        --i-table $PWD/result_${sample}/R2.${sample}.dada2-table.qza \
-        --p-sampling-depth ${min} \
-        --m-metadata-file metadata_${sample}.txt \
-        --output-dir $PWD/result_${sample}/R4.${sample}.core-metrics-results
+	--i-phylogeny $PWD/result_${sample}/R3.${sample}.rooted-tree.qza \
+ 	--i-table $PWD/result_${sample}/R2.${sample}.dada2-table.qza \
+  	--p-sampling-depth ${min} \
+   	--m-metadata-file metadata_${sample}.txt \
+	--output-dir $PWD/result_${sample}/R4.${sample}.core-metrics-results
 
 #-----Significance Analysis And Visualization Between Alpha Diversity Groups-----
 
